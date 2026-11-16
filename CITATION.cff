@@ -1,0 +1,32 @@
+cff-version: 1.2.0
+message: "If you use these data, please cite the paper below."
+title: "DNIe-SignAnywhere evaluation data"
+type: dataset
+license: CC-BY-4.0
+repository-code: "https://github.com/Andre031222/dnie-signanywhere-evaluation"
+authors:
+  - family-names: Laura-Murillo
+    given-names: Ramiro Pedro
+    orcid: "https://orcid.org/0000-0003-1837-4871"
+  - family-names: Mamani-Vilca
+    given-names: Ecler
+    orcid: "https://orcid.org/0000-0002-5205-3660"
+  - family-names: Vilca-Solorzano
+    given-names: Richar Andre
+    orcid: "https://orcid.org/0009-0003-2385-5263"
+preferred-citation:
+  type: conference-paper
+  title: "Domain-Bound Smart-Card Signatures for Web Authentication, Transaction Signing and Identity Proofing with Peru's DNIe"
+  authors:
+    - family-names: Laura-Murillo
+      given-names: Ramiro Pedro
+    - family-names: Mamani-Vilca
+      given-names: Ecler
+    - family-names: Vilca-Solorzano
+      given-names: Richar Andre
+  conference:
+    name: "International Conference on Intelligent Computing, Communication and Data Science (ICICCDS 2027)"
+  collection-title: "Studies in Autonomic, Data-Driven and Industrial Computing"
+  publisher:
+    name: Springer
+  year: 2027

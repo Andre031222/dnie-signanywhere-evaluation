@@ -1,0 +1,61 @@
+threads,operation,run,per_second
+1,Challenge verification,1,19936
+1,CMS transaction verification,1,7966
+1,Challenge verification,2,19995
+1,CMS transaction verification,2,7910
+1,Challenge verification,3,20022
+1,CMS transaction verification,3,7739
+1,Challenge verification,4,20074
+1,CMS transaction verification,4,7708
+1,Challenge verification,5,19103
+1,CMS transaction verification,5,8022
+2,Challenge verification,1,36426
+2,CMS transaction verification,1,14940
+2,Challenge verification,2,39321
+2,CMS transaction verification,2,14055
+2,Challenge verification,3,37154
+2,CMS transaction verification,3,13809
+2,Challenge verification,4,37027
+2,CMS transaction verification,4,13930
+2,Challenge verification,5,38716
+2,CMS transaction verification,5,14349
+4,Challenge verification,1,63272
+4,CMS transaction verification,1,24913
+4,Challenge verification,2,64277
+4,CMS transaction verification,2,26002
+4,Challenge verification,3,65642
+4,CMS transaction verification,3,24527
+4,Challenge verification,4,65160
+4,CMS transaction verification,4,22998
+4,Challenge verification,5,61067
+4,CMS transaction verification,5,25210
+6,Challenge verification,1,78645
+6,CMS transaction verification,1,29625
+6,Challenge verification,2,81745
+6,CMS transaction verification,2,30391
+6,Challenge verification,3,71350
+6,CMS transaction verification,3,28333
+6,Challenge verification,4,69163
+6,CMS transaction verification,4,33111
+6,Challenge verification,5,80729
+6,CMS transaction verification,5,29817
+8,Challenge verification,1,86960
+8,CMS transaction verification,1,37804
+8,Challenge verification,2,87237
+8,CMS transaction verification,2,37715
+8,Challenge verification,3,92101
+8,CMS transaction verification,3,28283
+8,Challenge verification,4,90455
+8,CMS transaction verification,4,35661
+8,Challenge verification,5,91208
+8,CMS transaction verification,5,32856
+10,Challenge verification,1,95006
+10,CMS transaction verification,1,38122
+10,Challenge verification,2,102539
+10,CMS transaction verification,2,42685
+10,Challenge verification,3,97170
+10,CMS transaction verification,3,42708
+10,Challenge verification,4,103600
+10,CMS transaction verification,4,40115
+10,Challenge verification,5,99334
+10,CMS transaction verification,5,41319

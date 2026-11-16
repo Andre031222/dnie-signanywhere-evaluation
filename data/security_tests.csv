@@ -1,0 +1,14 @@
+id,case,threat,expected,obtained,as_specified
+T1,Valid domain-bound challenge signature,-,accept,accept,yes
+T2,Signature made for a look-alike domain,"A1, A2",reject,reject,yes
+T3,Replay of an already signed challenge,A3,reject,reject,yes
+T4,Unknown or forged challenge identifier,A2,reject,reject,yes
+T5,Certificate from an authority imitating the issuer,A4,reject,reject,yes
+T6,Expired signing certificate,A4,reject,reject,yes
+T7,Valid signature with another citizen's certificate,A4,reject,reject,yes
+T8,"CMS-signed transaction, intact",-,accept,accept,yes
+T9,"CMS-signed transaction, one field altered",A5,reject,reject,yes
+T10,Transaction signed by another card holder,A5,reject,reject,yes
+T11,Server seal applied and verified,-,accept,accept,yes
+T12,Same signed challenge sent by 32 threads at once (500 trials),A3,reject,accept,NO
+T13,Real-time relay of a genuine challenge,A1,reject,accept,NO
