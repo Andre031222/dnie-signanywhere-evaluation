@@ -31,8 +31,8 @@ The server **never trusts the domain in the link**: it rebuilds `m` with its own
 
 | Use | What is signed | What the server checks |
 | --- | --- | --- |
-| **Passwordless authentication** | `SIGN|d|r|k` | signature over the rebuilt message, certificate chain, validity, DNI registry, single use of `r` |
-| **Transaction signing** | canonical string `<id>|key:value|…` as detached CMS SignedData | CMS message digest, DNI of the signer equals DNI of the session |
+| **Passwordless authentication** | `SIGN\|d\|r\|k` | signature over the rebuilt message, certificate chain, validity, DNI registry, single use of `r` |
+| **Transaction signing** | canonical string `<id>\|key:value\|…` as detached CMS SignedData | CMS message digest, DNI of the signer equals DNI of the session |
 | **Identity proofing** | the same challenge, before personal data change | as for authentication |
 
 ```mermaid
@@ -47,7 +47,7 @@ sequenceDiagram
     N->>C: 3. PIN, MSE, PSO:CDS(SHA-256(m))
     C-->>N: σ, 90 00
     N->>S: 4. σ, certificate, r (TLS)
-    Note over S: 5. rebuild m with own d, verify σ,<br/>chain, validity, DNI; mark r as used
+    Note over S: 5. rebuild m with own d, verify σ, chain, validity and DNI, mark r as used
     B->>S: 6. poll status
     S-->>B: session for the DNI
 ```
@@ -89,19 +89,19 @@ Threat model: the attacker can **(A1)** run a look-alike web site, **(A2)** open
 
 | ID | Case | Threat | Expected | Obtained |
 | --- | --- | :---: | :---: | :---: |
-| T1 | Valid domain-bound challenge signature | – | accept | ✅ accept |
-| **T2** | **Signature made for a look-alike domain** | A1, A2 | reject | ✅ reject |
-| T3 | Replay of an already signed challenge | A3 | reject | ✅ reject |
-| T4 | Unknown or forged challenge identifier | A2 | reject | ✅ reject |
-| T5 | Certificate from an authority imitating the issuer | A4 | reject | ✅ reject |
-| T6 | Expired signing certificate | A4 | reject | ✅ reject |
-| T7 | Valid signature with another citizen's certificate | A4 | reject | ✅ reject |
-| T8 | CMS-signed transaction, intact | – | accept | ✅ accept |
-| T9 | CMS-signed transaction, one field altered | A5 | reject | ✅ reject |
-| T10 | Transaction signed by another card holder | A5 | reject | ✅ reject |
-| T11 | Server seal applied and verified | – | accept | ✅ accept |
-| **T12** | **Same signed challenge sent by 32 threads at once (500 trials)** | A3 | reject | ⚠️ accepted twice in 4 trials |
-| **T13** | **Real-time relay of a genuine challenge** | A1 | reject | ❌ accept (design limitation) |
+| T1 | Valid domain-bound challenge signature | – | accept | accept |
+| **T2** | **Signature made for a look-alike domain** | A1, A2 | reject | reject |
+| T3 | Replay of an already signed challenge | A3 | reject | reject |
+| T4 | Unknown or forged challenge identifier | A2 | reject | reject |
+| T5 | Certificate from an authority imitating the issuer | A4 | reject | reject |
+| T6 | Expired signing certificate | A4 | reject | reject |
+| T7 | Valid signature with another citizen's certificate | A4 | reject | reject |
+| T8 | CMS-signed transaction, intact | – | accept | accept |
+| T9 | CMS-signed transaction, one field altered | A5 | reject | reject |
+| T10 | Transaction signed by another card holder | A5 | reject | reject |
+| T11 | Server seal applied and verified | – | accept | accept |
+| **T12** | **Same signed challenge sent by 32 threads at once (500 trials)** | A3 | reject | **accepted twice in 4 trials** |
+| **T13** | **Real-time relay of a genuine challenge** | A1 | reject | **accept (design limitation)** |
 
 Each expected outcome was written before the run. Results after the race fix will be added to [`data/`](data/).
 
