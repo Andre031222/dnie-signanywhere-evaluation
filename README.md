@@ -145,7 +145,7 @@ dnie-signanywhere-evaluation/
 │   ├── latency_summary.csv              # n, median, 95th percentile and mean per operation (ms)
 │   ├── latency_samples.csv              # all 2000 timed runs per operation (ms)
 │   └── throughput_runs.csv              # verifications/s per thread count and run
-├── figures/performance.{png,pdf}        # Fig. 3 of the paper (PNG at 600 dpi)
+├── figures/performance.png              # Fig. 3 of the paper (600 dpi)
 ├── real-card/                           # physical DNIe 2.0 / 3.0: signing times and behaviour checks
 ├── CITATION.cff
 └── LICENSE                              # CC BY 4.0 for data and figures
