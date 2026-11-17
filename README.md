@@ -74,6 +74,7 @@ sequenceDiagram
 | Challenge verification | **0.064 ms** |
 | CMS transaction verification | **0.137 ms** |
 | Throughput, 10 threads | **99 500 ± 3 600 /s** |
+| Card signature, physical DNIe (n = 10) | **1.94 s** |
 
 </td></tr>
 </table>
@@ -81,7 +82,7 @@ sequenceDiagram
 - **Domain binding works for what it was designed for.** A signature made for a look-alike domain (T2), a replayed challenge (T3), an untrusted issuer (T5), an expired certificate (T6) and an altered transaction field (T9) were all rejected.
 - **A concurrency test found a race.** With 32 simultaneous submissions of the same signed challenge, two were accepted in 4 of 500 trials (and 5 of 500 in a repeat run). The single-use check read, tested and wrote the challenge in separate steps; an atomic compare-and-set fixes it.
 - **Domain binding is not origin binding.** A custom URL scheme cannot tell the client which page opened it, so a phishing page can relay a genuine challenge in real time (T13). The remedy is to deliver the session to the browser that the client itself opens at `d`, as the German eID client does.
-- **The server is not the bottleneck.** Verification costs about a tenth of a millisecond; the user experience is set by the card and the PIN entry.
+- **The server is not the bottleneck.** Verification costs about a tenth of a millisecond, while one signature on a physical DNIe 2.0 or 3.0 card takes a median of 1.94 s (range 1.69–2.10 s). Signatures from both card versions were reported valid by the national Firma Perú validator ([`real-card/`](real-card/)).
 
 ## Security test cases
 
@@ -144,7 +145,7 @@ dnie-signanywhere-evaluation/
 │   ├── latency_samples.csv              # all 2000 timed runs per operation (ms)
 │   └── throughput_runs.csv              # verifications/s per thread count and run
 ├── figures/performance.{png,pdf}        # Fig. 3 of the paper (PNG at 600 dpi)
-├── real-card/                           # measurements with physical DNIe cards (see its README)
+├── real-card/                           # physical DNIe 2.0 / 3.0: signing times and behaviour checks
 ├── CITATION.cff
 └── LICENSE                              # CC BY 4.0 for data and figures
 ```

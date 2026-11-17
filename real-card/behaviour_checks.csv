@@ -1,0 +1,5 @@
+check,dnie_versions,observed
+wrong_pin_once,2.0,no signature; card reports remaining attempts; chip blocks after 3 consecutive errors
+reader_disconnected,2.0 and 3.0,client reports no reader and lists no card certificate
+two_cards_present,2.0 and 3.0,client lists the signing certificates of both cards for the user to choose
+production_chain_validation,2.0 and 3.0,signatures under ECEP-RENIEC CA Class 2 reported valid (PAdES baseline B) by the Firma Peru national validator
