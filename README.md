@@ -5,7 +5,7 @@
 [![Proceedings](https://img.shields.io/badge/Proceedings%20paper-ICICCDS%202027%20(accepted)-2E7D32?style=flat-square)](https://www.iciccds.com/)
 [![Springer ADIC](https://img.shields.io/badge/Springer-ADIC%20series%20%C2%B7%20Scopus-0F2444?style=flat-square&logo=springer&logoColor=white)](https://www.iciccds.com/)
 [![Data: CC BY 4.0](https://img.shields.io/badge/Data-CC%20BY%204.0-337AB7?style=flat-square)](LICENSE)
-[![Security tests](https://img.shields.io/badge/security%20tests-11%2F13%20as%20specified-F57C00?style=flat-square)](#security-test-cases)
+[![Security tests](https://img.shields.io/badge/security%20tests-12%2F13%20as%20specified-F57C00?style=flat-square)](#security-test-cases)
 [![Java 25](https://img.shields.io/badge/OpenJDK-25-ED8B00?style=flat-square&logo=openjdk&logoColor=white)](https://openjdk.org/)
 [![Bouncy Castle](https://img.shields.io/badge/Bouncy%20Castle-1.78-6E6E6E?style=flat-square)](https://www.bouncycastle.org/)
 [![Median verification](https://img.shields.io/badge/challenge%20verification-0.064%20ms-1565C0?style=flat-square)](#cost-on-the-server)
@@ -61,8 +61,8 @@ sequenceDiagram
 
 | Outcome | Cases |
 | --- | :---: |
-| As specified | **11 / 13** |
-| Race in the single-use rule (T12) | found |
+| As specified | **12 / 13** |
+| Race in the single-use rule (T12) | found and fixed |
 | Real-time relay (T13) | not detected |
 
 </td><td valign="top" width="50%">
@@ -80,7 +80,7 @@ sequenceDiagram
 </table>
 
 - **Domain binding works for what it was designed for.** A signature made for a look-alike domain (T2), a replayed challenge (T3), an untrusted issuer (T5), an expired certificate (T6) and an altered transaction field (T9) were all rejected.
-- **A concurrency test found a race.** With 32 simultaneous submissions of the same signed challenge, two were accepted in 4 of 500 trials (and 5 of 500 in a repeat run). The single-use check read, tested and wrote the challenge in separate steps; an atomic compare-and-set fixes it.
+- **A concurrency test found a race, and the fix was verified.** With 32 simultaneous submissions of the same signed challenge, two were accepted in 4 of 500 trials (5 of 500 in a repeat run), because the single-use check read, tested and wrote the challenge in separate steps. After replacing it with an atomic compare-and-set, exactly one submission was accepted in all 500 trials, in four runs.
 - **Domain binding is not origin binding.** A custom URL scheme cannot tell the client which page opened it, so a phishing page can relay a genuine challenge in real time (T13). The remedy is to deliver the session to the browser that the client itself opens at `d`, as the German eID client does.
 - **The server is not the bottleneck.** Verification costs about a tenth of a millisecond, while one signature on a physical DNIe 2.0 or 3.0 card takes a median of 1.94 s (range 1.69–2.10 s). Signatures from both card versions were reported valid by the national Firma Perú validator ([`real-card/`](real-card/)).
 
@@ -101,10 +101,10 @@ Threat model: the attacker can **(A1)** run a look-alike web site, **(A2)** open
 | T9 | CMS-signed transaction, one field altered | A5 | reject | reject |
 | T10 | Transaction signed by another card holder | A5 | reject | reject |
 | T11 | Server seal applied and verified | – | accept | accept |
-| **T12** | **Same signed challenge sent by 32 threads at once (500 trials)** | A3 | reject | **accepted twice in 4 trials** |
+| **T12** | **Same signed challenge sent by 32 threads at once (500 trials)** | A3 | reject | reject after the fix (before: accepted twice in 4 trials) |
 | **T13** | **Real-time relay of a genuine challenge** | A1 | reject | **accept (design limitation)** |
 
-Each expected outcome was written before the run. Results after the race fix will be added to [`data/`](data/).
+Each expected outcome was written before the run. T12 is reported before and after the atomic fix of the single-use rule.
 
 ## Cost on the server
 
@@ -140,7 +140,8 @@ Mean ± standard deviation of five 5-s runs per thread count. Latency: n = 2000 
 dnie-signanywhere-evaluation/
 ├── data/
 │   ├── security_tests.csv               # 13 cases: id, case, threat, expected, obtained, as_specified
-│   ├── concurrency_t12_before_fix.csv   # T12: accepted submissions per trial (500 trials)
+│   ├── concurrency_t12_before_fix.csv   # T12 before the fix: accepted submissions per trial (500 trials)
+│   ├── concurrency_t12_after_fix.csv    # T12 after the atomic fix
 │   ├── latency_summary.csv              # n, median, 95th percentile and mean per operation (ms)
 │   ├── latency_samples.csv              # all 2000 timed runs per operation (ms)
 │   └── throughput_runs.csv              # verifications/s per thread count and run
@@ -155,7 +156,8 @@ dnie-signanywhere-evaluation/
 | File | Column | Meaning |
 | --- | --- | --- |
 | `security_tests.csv` | `threat` | attacker capability A1–A5 exercised by the case |
-| | `expected` / `obtained` | `accept` or `reject`, stated before / observed after the run |
+| | `expected` / `obtained` | `accept` or `reject`, stated before / observed after the run (T12 after the fix) |
+| | `obtained_before_fix` | outcome before the atomic fix of the single-use rule |
 | `concurrency_t12_before_fix.csv` | `accepted_per_trial` | submissions accepted out of 32 simultaneous ones |
 | `latency_samples.csv` | `operation`, `ms` | one row per timed run |
 | `throughput_runs.csv` | `threads`, `run`, `per_second` | completed verifications per second in one 5-s run |
